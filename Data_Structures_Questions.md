@@ -14,10 +14,13 @@ O(1). Size is updated as items are added / removed.
 ## Binary Search Tree
 
 1. What is the runtime complexity of `insert`? 
+O(log n). Each comparison halves the number of possible positions still to consider.
 
 2. What is the runtime complexity of `contains`?
+O(log n). Each comparison halves the number of possible values still to consider.
 
 3. What is the runtime complexity of `get_max`? 
+O(1). There is only one way to get to max - traverse the RHS of the tree.
 
 ## Heap
 
