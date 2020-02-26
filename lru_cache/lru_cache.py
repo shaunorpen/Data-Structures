@@ -11,7 +11,7 @@ class LRUCache:
     def __init__(self, limit=10):
         self.limit = limit
         self.size = 0
-        self.position = DoublyLinkedList()
+        self.order = DoublyLinkedList()
         self.storage = {}
 
     """
@@ -21,13 +21,19 @@ class LRUCache:
     Returns the value associated with the key or None if the
     key-value pair doesn't exist in the cache.
     """
+    # def get(self, key):
+    #     if key in self.storage:
+    #         node = self.storage[key]
+    #         self.position.move_to_front(node)
+    #         return node.value[1]
+    #     else:
+    #         return None
+
     def get(self, key):
         if key in self.storage:
             node = self.storage[key]
-            self.position.move_to_front(node)
+            self.order.move_to_end(node)
             return node.value[1]
-        else:
-            return None
 
     """
     Adds the given key-value pair to the cache. The newly-
@@ -39,16 +45,30 @@ class LRUCache:
     want to overwrite the old value associated with the key with
     the newly-specified value.
     """
+    # def set(self, key, value):
+    #     if key in self.storage:
+    #         node = self.storage[key]
+    #         self.position.delete(node)
+    #         self.position.add_to_head((key, value))
+    #         self.storage[key] = self.position.head
+    #     else:
+    #         self.position.add_to_head((key, value))
+    #         self.storage[key] = self.position.head
+    #         self.size += 1
+    #     if self.size > self.limit:
+    #         self.storage.pop(self.position.remove_from_tail()[0], None)
+    #         self.size -= 1
+
     def set(self, key, value):
         if key in self.storage:
             node = self.storage[key]
-            self.position.delete(node)
-            self.position.add_to_head((key, value))
-            self.storage[key] = self.position.head
-        else:
-            self.position.add_to_head((key, value))
-            self.storage[key] = self.position.head
-            self.size += 1
-        if self.size > self.limit:
-            self.storage.pop(self.position.remove_from_tail()[0], None)
+            node.value = (key, value) 
+            self.order.move_to_end(node)
+            return
+        if self.size == self.limit:
+            del self.storage[self.order.head.value[0]]
+            self.order.remove_from_head()
             self.size -= 1
+        self.order.add_to_tail((key, value))
+        self.storage[key] = self.order.tail
+        self.size += 1 
