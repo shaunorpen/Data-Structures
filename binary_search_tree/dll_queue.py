@@ -1,8 +1,7 @@
-import sys
-sys.path.append('../doubly_linked_list')
 from doubly_linked_list import DoublyLinkedList
 
-class Stack:
+
+class Queue:
     def __init__(self):
         self.size = 0
         # Why is our DLL a good choice to store our elements?
@@ -13,12 +12,12 @@ class Stack:
 
         self.storage = DoublyLinkedList()
 
-    def push(self, value):
+    def enqueue(self, value):
         self.size += 1
-        self.storage.add_to_head(value)
+        return self.storage.add_to_tail(value)
 
-    def pop(self):
-        if self.size:
+    def dequeue(self):
+        if self.size:            
             self.size -= 1
             return self.storage.remove_from_head()
         else:
